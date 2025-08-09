@@ -5,8 +5,15 @@ function AppleVideos() {
   const [AppleVideos, setAppleVideos] = useState([]);
   const [error, setError] = useState(null);
 
+  // Load API key from environment variables
+  const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
+  const CHANNEL_ID = "UCE_M8A5yxnLfW0KghEeajjw"; // Apple channel ID
+  const MAX_RESULTS = 18;
+
   useEffect(() => {
-    fetch("https://youtube.googleapis.com/youtube/v3/search?key=AIzaSyCiiTkLyMPNJSlEhVZPSKqAY-K3itzz2zI&channelId=UCE_M8A5yxnLfW0KghEeajjw&part=snippet&order=date&maxResults=18")
+    const url = `https://youtube.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=${MAX_RESULTS}`;
+    
+    fetch(url)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Failed to fetch videos: ' + res.statusText);
@@ -24,7 +31,7 @@ function AppleVideos() {
         console.error("Failed to fetch videos:", error);
         setError(error.message);
       });
-  }, []);
+  }, [API_KEY]);
 
   return (
     <div id='vedio'>
